@@ -43,10 +43,27 @@ public abstract class FindWay {
 	 * @param to Zielknoten
 	 * @return Weg als Liste
 	 */
-	protected ArrayList<Integer> createWay(int from, int to) {
+
+	//am einfachsten mit dem pred (Predecessor) variable
+	protected ArrayList<Integer> createWay(int from, int to)
+	{
 		ArrayList<Integer> way = new ArrayList<Integer>();
 
-		// TODO: IHRE IMPLEMENTIERUNG
+		//Ausgangsknoten (ganz hinten)
+		int currentVertex = to;
+
+		//Solange nicht am Anfang...
+		while(from != currentVertex)
+		{
+			//Dem Weg hinzufügen...der Vorgänger ist dann gleich der neue currentVertex...
+			// Index = 0...das heißt immer am Anfang...damit ist der erste Knoten am Ende ist dann  0
+			way.add(0 ,currentVertex);
+			currentVertex = pred[currentVertex];
+		}
+
+		//Da wir das nicht mehr in der While-Schleife machen...müssen wir so das FROM element hinzufügen.
+		way.add(0, from);
+
 
 		return way;
 	}
