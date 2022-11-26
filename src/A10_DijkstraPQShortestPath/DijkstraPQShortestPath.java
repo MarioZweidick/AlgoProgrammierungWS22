@@ -68,11 +68,11 @@ public class DijkstraPQShortestPath extends FindWay {
 			}
 		}
 
+		if(dist[to] != 9999)
+			return true;
+
 		// Wenn wir nach dem Durchgehen des Heaps immer noch bei der Distanz von "TO" den Wert 9999 haben, dann gibt es keinen Weg!!!!
 		// False wird retourniert.
-		if(dist[to] == 9999)
-			return false;
-
-		return true;
+		return false;
 	}
 }
