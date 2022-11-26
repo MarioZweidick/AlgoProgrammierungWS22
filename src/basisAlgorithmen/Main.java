@@ -4,7 +4,8 @@ import java.util.List;
 public class Main {
 
 	public static void main(String[] args) {
-		
+
+		//u...vonKnoten v...Zielknoten (z.B. von 0 auf 4 mit Gewicht von 3)
 		Graph g = new ListGraph(8, false);
 		g.addEdge(0, 4,  3);
 		g.addEdge(0, 5,  4);
