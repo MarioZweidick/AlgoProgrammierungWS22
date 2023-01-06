@@ -2,27 +2,46 @@ package A03_DoubleLinkedList;
 
 public class DoubleLinkedList<T>
 {
+    private Node<T> first;
 
+    private Node<T> last;
+
+    private Node<T> current;
     /**
      * Einfügen einer neuen <T>
      * @param a <T>
      */
     public void add(T a) {
 
+        Node<T> newNode = new Node<>(a);
+
+        if(last == null)
+        {
+            first = newNode;
+            last = newNode;
+        }
+        else
+        {
+            last.setNext(newNode);
+            newNode.setPrevious(last);
+            last = newNode;
+        }
     }
 
     /**
      * Internen Zeiger für next() zurücksetzen
      */
-    public void reset() {
-
+    public void reset()
+    {
+        current = first;
     }
 
     /**
      * analog zur Funktion reset()
      */
-    public void resetToLast() {
-
+    public void resetToLast()
+    {
+        current = last;
     }
 
     /**
@@ -30,8 +49,7 @@ public class DoubleLinkedList<T>
      * @return Node|null
      */
     public Node<T> getFirst() {
-    	
-    	return null;
+        return first;
     }
     
     /**
@@ -40,7 +58,7 @@ public class DoubleLinkedList<T>
      */
     public Node<T> getLast() {
     	
-    	return null;
+    	return last;
     }
     
     /**
@@ -50,7 +68,12 @@ public class DoubleLinkedList<T>
      */
     public T next() {
 
-    	return null;
+        if(current == null)
+            return null;
+
+        T returnData = current.getData();
+        current = current.getNext();
+        return returnData;
     }
 
     /**
@@ -59,22 +82,32 @@ public class DoubleLinkedList<T>
      */
     public T previous() {
 
-    	return null;
+    	if(current == null)
+            return null;
+
+        T returnedData = current.getData();
+        current = current.getPrevious();
+        return returnedData;
+
     }
     
     /**
      * Current-Pointer auf nächste <T> setzen (aber nicht auslesen).
      * Ignoriert still, dass current nicht gesetzt ist.
      */
-    public void moveNext() {
-
+    public void moveNext()
+    {
+        if(current != null)
+          current = current.getNext();
     }
     
     /**
      * Analog zur Funktion moveNext()
      */
-    public void movePrevious() {
-
+    public void movePrevious()
+    {
+        if(current != null)
+            current = current.getPrevious();
     }
    
     /**
@@ -84,7 +117,10 @@ public class DoubleLinkedList<T>
      */
     public T getCurrent() throws CurrentNotSetException {
 
-    	return null;
+        if(current != null)
+            return current.getData();
+        else
+            throw new CurrentNotSetException();
     }
 
     /**
@@ -94,7 +130,14 @@ public class DoubleLinkedList<T>
      */
     public T get(int pos) {
 
-        return null;
+        Node<T> node = first;
+        int i = 1;
+        while(i != pos && node != null)
+        {
+            i++;
+            node = node.getNext();
+        }
+        return (node != null ? node.getData() : null);
     }
 
     /**
@@ -102,8 +145,24 @@ public class DoubleLinkedList<T>
      * Falls das entfernte Element das aktuelle Element ist, wird current auf null gesetzt.
      * @param pos
      */
-    public void remove(int pos) {
+    public void remove(int pos)
+    {
+        Node<T> node = first;
+        int i = 1;
 
+        while(i != pos && node != null)
+        {
+            i++;
+            node = node.getNext();
+        }
+
+        if(node == null)
+            return;
+
+        removeNode(node);
+
+        if(node == current)
+            current = null;
     }
     
     /**
@@ -112,8 +171,40 @@ public class DoubleLinkedList<T>
      * (falls kein Nachfolger) das vorhergehende Element 
      * @throws CurrentNotSetException
      */
-    public void removeCurrent() throws CurrentNotSetException {
+    public void removeCurrent() throws CurrentNotSetException
+    {
+        if(current == null)
+            throw new CurrentNotSetException();
 
+        removeNode(current);
+
+        if(current.getNext() != null)
+            current = current.getNext();
+        else
+            current = current.getPrevious();
+    }
+
+    public void removeNode(Node n)
+    {
+        if(n == first)
+        {
+            first = n.getNext();
+        if(first != null)
+            first.setPrevious(null);
+        }
+
+        else if(n == last)
+        {
+            last = n.getPrevious();
+            if(last != null)
+                last.setNext(null);
+
+        }
+        else
+        {
+            n.getPrevious().setNext(n.getNext());
+            n.getNext().setPrevious(n.getPrevious());
+        }
     }
     
     /**
@@ -121,7 +212,31 @@ public class DoubleLinkedList<T>
      * und setzt dann die neu eingefügte <T> als aktuelle (current) <T>.
      * @throws CurrentNotSetException 
      */
-    public void insertAfterCurrentAndMove(T a) throws CurrentNotSetException {
+    public void insertAfterCurrentAndMove(T a) throws CurrentNotSetException
+    {
+        Node<T> newNode = new Node<>(a);
+
+        if(current == null)
+            throw new CurrentNotSetException();
+
+        else if(current == last)
+        {
+            last.setNext(newNode);
+            newNode.setPrevious(last);
+            last = newNode;
+        }
+        else
+        {
+        //Handling für neue Node
+        newNode.setNext(current.getNext());
+        newNode.setPrevious(current);
+
+        //Handling für "alte" current
+        current.getNext().setPrevious(newNode);
+        current.setNext(newNode);
+        }
+
+        current = newNode;
 
     }
 }

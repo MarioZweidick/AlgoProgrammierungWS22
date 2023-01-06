@@ -13,6 +13,7 @@ public class ConnectedComponents {
 	public int getNumberOfComponents(Graph g) {
 
 		return 0;
+
 	}
 
 }

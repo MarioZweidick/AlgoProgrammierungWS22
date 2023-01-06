@@ -23,7 +23,11 @@ public class Person {
 	 * Vergleicht zwei Personen miteinander
 	 * @return <0, wenn a<b || =0, wenn a=b || >0, wenn a>b
 	 */
-	public int compareTo(Person p) {
-		return 0;
+	public int compareTo(Person p)
+	{
+		if(nachname.compareTo(p.getNachname()) == 0)
+			return vorname.compareTo(p.getVorname());
+		else
+			return nachname.compareTo(p.getNachname());
 	}
 }
